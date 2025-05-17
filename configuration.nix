@@ -89,7 +89,7 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
+  #nixpkgs.config.allowUnfree = true;
 
   # Enable sound.
   # hardware.pulseaudio.enable = true;
@@ -111,6 +111,7 @@
   #   ];
   };
 
+  nixpkgs.config.allowUnfree = true;
   # programs.firefox.enable = true;
 
   # List packages installed in system profile. To search, run:

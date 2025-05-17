@@ -5,13 +5,13 @@
                 stateVersion = "24.11";
 
                 packages = with pkgs; [
+		        git
                         neofetch
                         foot
                         sox
                         mc
                         hyprland
                         cascadia-code
-                        jetbrains-mono
                         dejavu_fonts
                         liberation_ttf
                         noto-fonts
@@ -25,6 +25,7 @@
 
         imports = [
                ./bash.nix
+	       ./git.nix
         ];
 
         fonts.fontconfig.enable = true;
@@ -53,4 +54,5 @@
                 systemd.variables = [ "--all" ];
                 extraConfig = builtins.readFile ./hyprland.conf;
         };
+
 }
