@@ -1,4 +1,5 @@
 { config, pkgs, ... }: {
+        nixpkgs.config.allowUnfree = true;
         home = {
                 username = "dershtal";
                 homeDirectory = "/home/dershtal";
@@ -20,6 +21,7 @@
                         wofi
                         superfile
                         swaylock
+			vscode
                 ];
         };
 
