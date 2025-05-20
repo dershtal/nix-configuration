@@ -22,6 +22,8 @@
                         superfile
                         swaylock
 			vscode
+			firefox
+			chromium
                 ];
         };
 
@@ -38,6 +40,9 @@
                         gruvbox-material
                         nerdtree
                 ];
+		extraLuaConfig = ''
+		  vim.opt.shortmess:append("I")
+		'';
         };
         programs.foot = {
                 enable = true;
@@ -47,7 +52,7 @@
                     workers = 32;
                     initial-window-size-chars = "115x24";
                     pad = "4x4 center";
-                    font = "Cascadia Code PL:size=6";
+                    font = "Cascadia Code PL:size=13";
                   };
                 };
         };
