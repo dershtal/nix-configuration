@@ -24,6 +24,7 @@
 			vscode
 			firefox
 			chromium
+			pciutils
                 ];
         };
 
