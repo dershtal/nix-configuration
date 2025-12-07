@@ -3,11 +3,14 @@
 {
   programs.git = {
     enable = true;
-    userName = "Sergey Shtal";
-    userEmail = "dershtal@gmail.com";
 
-    # Пример алиасов:
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Sergey Shtal";
+        email = "dershtal@gmail.com";
+      };
+
+
       alias = {
         ck = "checkout";
       };

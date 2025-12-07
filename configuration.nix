@@ -12,22 +12,20 @@
 
   # Отключаем systemd-boot
   boot.loader.systemd-boot.enable = false;   # Выключаем systemd-boot
+
   boot.loader.grub.enable = true;
-
-  # Включаем поддержку EFI для GRUB
   boot.loader.grub.efiSupport = true;
-  boot.loader.grub.efiInstallAsRemovable = false;
-
-  # Разрешаем запись в EFI-переменные
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub.devices = ["nodev"];
 
-  # Указываем, что для EFI‑режима не нужен MBR, поэтому:
-  boot.loader.grub.devices = [ "nodev" ];
+  nixpkgs.config.allowUnfree = true;
 
   # Параметры ядра, если нужны:
   boot.kernelParams = [
     "quiet"
+    "splash"
     "pti=off"
     "spectre_v1=off"
     "spectre_v2=off"
@@ -48,11 +46,22 @@
     "smt=off"
   ];
 
+  boot.plymouth.enable = true;
+  #boot.plymouth.theme = "rings";
+
   nix.settings.experimental-features =["nix-command" "flakes"];
 
-  virtualisation.vmware.guest.enable = true;
+  # virtualisation.vmware.guest.enable = true;
 
   hardware.graphics.enable = true;
+      #nvidia = {
+      #    modesetting.enable = true;
+      #    powerManagement.enable = true;
+      #    nvidiaSettings = true;
+      #    open = false;
+      #};
+  #};
+  
 
   networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -80,7 +89,14 @@
   # Включаем Xserver (X11)
   # services.xserver.enable = true;
 
-  # services.xserver.videoDrivers = [ "vmware" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -164,6 +180,6 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 
 }

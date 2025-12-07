@@ -3,11 +3,12 @@
         home = {
                 username = "dershtal";
                 homeDirectory = "/home/dershtal";
-                stateVersion = "25.05";
+                stateVersion = "25.11";
 
                 packages = with pkgs; [
 		        git
                         neofetch
+                        #ghostty
                         foot
                         sox
                         mc
@@ -17,7 +18,7 @@
                         liberation_ttf
                         noto-fonts
                         noto-fonts-cjk-sans
-                        noto-fonts-emoji
+                        noto-fonts-color-emoji
                         wofi
                         superfile
                         swaylock
