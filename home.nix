@@ -26,6 +26,7 @@
 			firefox
 			chromium
 			pciutils
+                        read-edid
                 ];
         };
 

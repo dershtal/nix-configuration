@@ -53,7 +53,7 @@
 
   # virtualisation.vmware.guest.enable = true;
 
-  hardware.graphics.enable = true;
+
       #nvidia = {
       #    modesetting.enable = true;
       #    powerManagement.enable = true;
@@ -90,12 +90,21 @@
   # services.xserver.enable = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.graphics.enable = true;
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # package = config.boot.kernelPackages.nvidiaPackages.stable; 580 driver bug on 2k resolution!
+    # package = config.boot.kernelPackages.nvidiaPackages.legacy_570;
+    package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+      version = "570.86.16"; # 25.05 stable version
+      sha256_64bit = "sha256-RWPqS7ZUJH9JEAWlfHLGdqrNlavhaR1xMyzs8lJhy9U=";                                   
+      openSha256 = "sha256-DuVNA63+pJ8IB7Tw2gM4HbwlOh1bcDg2AN2mbEU9VPE=";                                     
+      settingsSha256 = "sha256-9rtqh64TyhDF5fFAYiWl3oDHzKJqyOW3abpcf2iNRT8=";                                 
+      usePersistenced = false;
+    };
   };
 
   # Configure keymap in X11
