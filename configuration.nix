@@ -13,14 +13,30 @@
   # Отключаем systemd-boot
   boot.loader.systemd-boot.enable = false;   # Выключаем systemd-boot
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.efiInstallAsRemovable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.loader.grub.devices = ["nodev"];
+  # Старый конфиг сет
+  #boot.loader.grub.enable = true;
+  #boot.loader.grub.efiSupport = true;
+  #boot.loader.grub.efiInstallAsRemovable = true;
+  #boot.loader.efi.canTouchEfiVariables = false;
+  #boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  #boot.loader.grub.devices = ["nodev"];
+
+  boot.loader = {
+    grub = {
+      enable = true;
+      efiSupport = true;
+      efiInstallAsRemovable = true;
+      devices = ["nodev"];
+      gfxmodeEfi = "1920x1080";
+    };
+    efi = {
+      canTouchEfiVariables = false;
+      efiSysMountPoint = "/boot/efi";
+    };
+  };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.nvidia.acceptLicense = true;
 
   # Параметры ядра, если нужны:
   boot.kernelParams = [
@@ -98,13 +114,8 @@
     nvidiaSettings = true;
     # package = config.boot.kernelPackages.nvidiaPackages.stable; 580 driver bug on 2k resolution!
     # package = config.boot.kernelPackages.nvidiaPackages.legacy_570;
-    package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-      version = "570.86.16"; # 25.05 stable version
-      sha256_64bit = "sha256-RWPqS7ZUJH9JEAWlfHLGdqrNlavhaR1xMyzs8lJhy9U=";                                   
-      openSha256 = "sha256-DuVNA63+pJ8IB7Tw2gM4HbwlOh1bcDg2AN2mbEU9VPE=";                                     
-      settingsSha256 = "sha256-9rtqh64TyhDF5fFAYiWl3oDHzKJqyOW3abpcf2iNRT8=";                                 
-      usePersistenced = false;
-    };
+
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   };
 
   # Configure keymap in X11

@@ -3,13 +3,15 @@
         home = {
                 username = "dershtal";
                 homeDirectory = "/home/dershtal";
-                stateVersion = "25.11";
+                stateVersion = "26.05";
 
                 packages = with pkgs; [
 		        git
-                        neofetch
+			fastfetch
+                        #neofetch
                         #ghostty
                         foot
+			tmux
                         sox
                         mc
                         hyprland
@@ -43,7 +45,7 @@
                         gruvbox-material
                         nerdtree
                 ];
-		extraLuaConfig = ''
+		initLua = ''
 		  vim.opt.shortmess:append("I")
 		'';
         };
@@ -59,10 +61,14 @@
                   };
                 };
         };
+	programs.tmux = {
+	        enable = true;
+		clock24 = true;
+	};
         wayland.windowManager.hyprland = {
                 enable = true;
                 systemd.variables = [ "--all" ];
-                extraConfig = builtins.readFile ./hyprland.conf;
+                extraConfig = builtins.readFile ./hyprland.lua;
         };
 
 }
