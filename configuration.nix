@@ -40,6 +40,7 @@
 
   # Параметры ядра, если нужны:
   boot.kernelParams = [
+    "video=1920x1080"
     "quiet"
     "splash"
     "pti=off"
@@ -67,7 +68,7 @@
 
   nix.settings.experimental-features =["nix-command" "flakes"];
 
-  # virtualisation.vmware.guest.enable = true;
+  virtualisation.vmware.guest.enable = true;
 
 
       #nvidia = {

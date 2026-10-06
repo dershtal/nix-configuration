@@ -29,6 +29,7 @@
 			chromium
 			pciutils
                         read-edid
+			radare2
                 ];
         };
 

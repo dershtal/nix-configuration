@@ -14,4 +14,6 @@ git add .
 nix --extra-experimental-features 'nix-command flakes' flake show
 
 nixos-rebuild switch --flake .#nixos --use-remote-sudo
+
+# При билде не для ВМ закоментировать virtualisation.vmware.guest.enable = true; 
 ```

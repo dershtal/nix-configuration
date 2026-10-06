@@ -23,11 +23,21 @@
 ------------------
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
+
+-- mon for main system type
+--hl.monitor({
+--    output   = "HDMI-A-2",
+--    mode     = "2560x1440@75",
+--    position = "0x0",
+--    scale    = "1",
+--})
+
+-- mon for VM
 hl.monitor({
-    output   = "HDMI-A-2",
-    mode     = "2560x1440@75",
-    position = "0x0",
-    scale    = "1",
+    output = "",
+    mode = "preferred",
+    position = "auto",
+    scale = "1",
 })
 
 
