@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, pkgs-unstable, ... }: {
         nixpkgs.config.allowUnfree = true;
         home = {
                 username = "dershtal";
@@ -30,6 +30,8 @@
 			pciutils
                         read-edid
 			radare2
+
+			pkgs-unstable.noctalia-shell
                 ];
         };
 
@@ -39,7 +41,38 @@
         ];
 
         fonts.fontconfig.enable = true;
-        programs.neovim = {
+
+        xdg.configFile."noctalia/config.toml".text = ''
+          [shell]
+          time_format = "{:%H:%M}"
+          date_format = "%A, %x"
+          corner_radius_scale = 1.0
+
+          [theme]
+          mode = "dark"
+
+          [bar.main]
+          position = "top"
+          thickness = 34
+          background_opacity = 1.0
+          radius = 12
+          margin_ends = 10
+          margin_edge = 10
+          padding = 14
+          widget_spacing = 6
+          shadow = true
+
+          # Разметка виджетов на панели: слева, по центру и справа
+          start = ["launcher", "workspaces"]
+          center = ["clock"]
+          end = ["media", "tray", "volume", "brightness", "battery", "control-center"]
+          
+          # Если хочешь, чтобы Noctalia не перехватывала обои (пусть это делает hyprpaper/swaybg)
+          [wallpaper]
+          enabled = false
+        '';
+
+	programs.neovim = {
                 enable = true;
                 defaultEditor = true;
                 plugins = with pkgs.vimPlugins; [

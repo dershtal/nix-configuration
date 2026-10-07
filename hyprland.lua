@@ -60,11 +60,11 @@ local chromium    = "chromium --enable-features=UseOzonePlatform --ozone-platfor
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 --
--- hl.on("hyprland.start", function () 
---   hl.exec_cmd(terminal)
+hl.on("hyprland.start", function () 
+  hl.exec_cmd("noctalia-shell")
 --   hl.exec_cmd("nm-applet")
 --   hl.exec_cmd("waybar & hyprpaper & firefox")
--- end)
+end)
 
 
 -------------------------------
@@ -76,6 +76,9 @@ local chromium    = "chromium --enable-features=UseOzonePlatform --ozone-platfor
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
+
+-- Это нужно только для VM среды (отключить на релизе)
+hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
 
 -----------------------
 ----- PERMISSIONS -----
