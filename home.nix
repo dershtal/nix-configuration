@@ -9,7 +9,7 @@
 		        git
 			fastfetch
                         #neofetch
-                        #ghostty
+                        ghostty
                         foot
 			tmux
                         sox
@@ -50,6 +50,7 @@
 
           [theme]
           mode = "dark"
+	  palette = "Tokyo Night"
 
           [bar.main]
           position = "top"
@@ -197,6 +198,24 @@
                   };
                 };
         };
+	programs.ghostty = {
+		enable = true;
+                settings = {
+                        font-family = "Cascadia Code PL";
+                        font-size = 12;
+                        
+                        # Стартовый размер окна в символах (как 115x24 в foot)
+                        window-width = 115;
+                        window-height = 24;
+                        
+                        # Отступы от краев (как pad = "4x4 center")
+                        window-padding-x = 4;
+                        window-padding-y = 4;
+                        
+                        # Опционально: тема (в Ghostty встроены сотни тем)
+                        theme = "TokyoNight";
+                };
+	};
 	programs.tmux = {
 	        enable = true;
 		clock24 = true;

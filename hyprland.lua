@@ -46,8 +46,8 @@ hl.monitor({
 ---------------------
 
 -- Set programs that you use
-local terminal    = "foot"
-local fileManager = "foot -e superfile"
+local terminal    = "ghostty"
+local fileManager = "ghostty -e superfile"
 local menu        = "hyprlauncher"
 local chromium    = "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland"
 
