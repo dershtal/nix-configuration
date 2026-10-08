@@ -72,17 +72,87 @@
           enabled = false
         '';
 
-	programs.neovim = {
+        programs.neovim = {
                 enable = true;
                 defaultEditor = true;
-                plugins = with pkgs.vimPlugins; [
-                        gruvbox-material
-                        nerdtree
+
+                extraPackages = with pkgs; [
+                        nil
+                        alejandra
                 ];
-		initLua = ''
-		  vim.opt.shortmess:append("I")
-		'';
+
+                plugins = with pkgs.vimPlugins; [
+                        nerdtree
+                        
+                        # Добавляем Tokyo Night и сразу настраиваем
+                        {
+                                plugin = tokyonight-nvim;
+                                type = "lua";
+                                config = ''
+                                  require("tokyonight").setup({
+                                    style = "night", -- Варианты: 'storm', 'moon', 'night', 'day'
+                                    transparent = false, -- Сделай true, если хочешь прозрачный фон
+                                    terminal_colors = true,
+                                    styles = {
+                                      comments = { italic = true },
+                                      keywords = { italic = true },
+                                      functions = {},
+                                      variables = {},
+                                    },
+                                  })
+                                  -- Включаем тему
+                                  vim.cmd("colorscheme tokyonight")
+                                '';
+                        }
+                        
+                        # LSP
+                        {
+                                plugin = nvim-lspconfig;
+                                type = "lua";
+                                config = ''
+                                  vim.lsp.config('nil_ls', {
+                                    cmd = { "nil" },
+                                    filetypes = { "nix" },
+                                    root_markers = { "flake.nix", ".git", "default.nix" },
+                                    settings = {
+                                      ['nil'] = {
+                                        formatting = { command = { "alejandra" } }
+                                      }
+                                    }
+                                  })
+                                  vim.lsp.enable('nil_ls')
+                                '';
+                        }
+                        
+                        # Treesitter
+                        {
+                                plugin = nvim-treesitter.withAllGrammars;
+                                type = "lua";
+                                config = ''
+                                  vim.api.nvim_create_autocmd("FileType", {
+                                    pattern = "*",
+                                    callback = function(args)
+                                      pcall(vim.treesitter.start, args.buf)
+                                    end,
+                                  })
+                                '';
+                        }
+                ];
+
+                # Внешний вид (остальные настройки) и хоткеи
+                initLua = ''
+                  vim.opt.shortmess:append("I")
+
+                  -- Хоткеи
+                  vim.keymap.set('n', '<F12>', vim.lsp.buf.definition, { desc = "Go to Definition" })
+                  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "Hover Info" })
+                  vim.keymap.set('n', 'gd', vim.lsp.buf.code_action, { desc = "Code Action" })
+                  
+                  -- Форматирование
+                  vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = "Format Document" })
+                '';
         };
+
         programs.foot = {
                 enable = true;
                 settings = {
