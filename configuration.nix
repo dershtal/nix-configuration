@@ -2,12 +2,13 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./noctalia-greeter.nix
     ];
 
   # Отключаем systemd-boot
@@ -27,7 +28,7 @@
       efiSupport = true;
       efiInstallAsRemovable = true;
       devices = ["nodev"];
-      gfxmodeEfi = "1920x1080";
+      gfxmodeEfi = "2560x1440";
     };
     efi = {
       canTouchEfiVariables = false;
@@ -68,7 +69,40 @@
 
   nix.settings.experimental-features =["nix-command" "flakes"];
 
-  virtualisation.vmware.guest.enable = true;
+  services.displayManager.noctalia-greeter = {
+    enable = true;
+    
+    # Берем саму программу из unstable-канала
+    package = pkgs-unstable.noctalia-greeter; 
+    
+    settings = {
+      keyboard = {
+        layout = "us,ru";
+      };
+      
+      # Современный синтаксис курсора (как просили в доках модуля)
+      cursor = {
+        theme = "Bibata-Modern-Classic";
+        size = 24;
+        path = pkgs.bibata-cursors; # Указываем прямо на пакет!
+      };
+    };
+  };
+
+  programs.hyprland = {
+    enable = true;
+    # Если используете nvidia, можно включить утилитный пакет или оставить на усмотрение home-manager, 
+    # но включение самого модуля обязательно для создания .desktop файлов в /run/current-system/sw/share/wayland-sessions/
+  };
+
+  # === ФИКС ДЛЯ ВИРТУАЛКИ (VMware) ===
+  # Заставляем экран входа использовать программный рендеринг
+  #systemd.services.greetd.environment = {
+  #  LIBGL_ALWAYS_SOFTWARE = "1";
+  #  WLR_NO_HARDWARE_CURSORS = "1";
+  #};
+
+  virtualisation.vmware.guest.enable = false;
 
 
       #nvidia = {

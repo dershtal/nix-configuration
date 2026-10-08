@@ -7,6 +7,7 @@
                 in {
                         rebuild = "sudo nixos-rebuild switch --flake ${flakePath}";
                         hms = "home-manager switch --flake ${flakePath}";
+			gad = "git add .";
                 };
         };
 }

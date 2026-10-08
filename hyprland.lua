@@ -25,20 +25,20 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 
 -- mon for main system type
---hl.monitor({
---    output   = "HDMI-A-2",
---    mode     = "2560x1440@75",
---    position = "0x0",
---    scale    = "1",
---})
+hl.monitor({
+    output   = "HDMI-A-2",
+    mode     = "2560x1440@75",
+    position = "0x0",
+    scale    = "1",
+})
 
 -- mon for VM
-hl.monitor({
-    output = "",
-    mode = "preferred",
-    position = "auto",
-    scale = "1",
-})
+--hl.monitor({
+--    output = "",
+--    mode = "preferred",
+--    position = "auto",
+--    scale = "1",
+--})
 
 
 ---------------------
@@ -49,7 +49,8 @@ hl.monitor({
 local terminal    = "ghostty"
 local fileManager = "ghostty -e superfile"
 local menu        = "hyprlauncher"
-local chromium    = "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland"
+local chromium    = "chromium"
+--local chromium    = "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland"
 
 -------------------
 ---- AUTOSTART ----
@@ -60,7 +61,8 @@ local chromium    = "chromium --enable-features=UseOzonePlatform --ozone-platfor
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 --
-hl.on("hyprland.start", function () 
+hl.on("hyprland.start", function ()
+  hl.exec_cmd("hyprctl setcursor Bibata-Modern-Classic 24")
   hl.exec_cmd("noctalia-shell")
 --   hl.exec_cmd("nm-applet")
 --   hl.exec_cmd("waybar & hyprpaper & firefox")
@@ -77,8 +79,11 @@ hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
 
+hl.env("XCURSOR_THEME", "Bibata-Modern-Classic")
+hl.env("HYPRCURSOR_THEME", "Bibata-Modern-Classic")
+
 -- Это нужно только для VM среды (отключить на релизе)
-hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
+--hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
 
 -----------------------
 ----- PERMISSIONS -----

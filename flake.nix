@@ -12,6 +12,7 @@
             url = "github:nix-community/home-manager/release-26.05";
             inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
@@ -28,7 +29,10 @@
                   inherit system;
                   # Передаем pkgs-unstable в configuration.nix (на всякий случай)
                   specialArgs = { inherit pkgs-unstable; }; 
-                  modules = [ ./configuration.nix ];
+                  modules = [
+		    ./configuration.nix
+		    
+		  ];
           };
 
           homeConfigurations.dershtal = home-manager.lib.homeManagerConfiguration {

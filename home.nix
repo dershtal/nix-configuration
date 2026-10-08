@@ -8,7 +8,6 @@
                 packages = with pkgs; [
 		        git
 			fastfetch
-                        #neofetch
                         ghostty
                         foot
 			tmux
@@ -23,55 +22,76 @@
                         noto-fonts-color-emoji
                         wofi
                         superfile
-                        swaylock
 			vscode
 			firefox
 			chromium
 			pciutils
                         read-edid
 			radare2
-
-			pkgs-unstable.noctalia-shell
+			bibata-cursors
                 ];
         };
 
         imports = [
                ./bash.nix
 	       ./git.nix
+	       ./noctalia.nix
         ];
 
         fonts.fontconfig.enable = true;
 
-        xdg.configFile."noctalia/config.toml".text = ''
-          [shell]
-          time_format = "{:%H:%M}"
-          date_format = "%A, %x"
-          corner_radius_scale = 1.0
+	home.pointerCursor = {
+                gtk.enable = true;
+                x11.enable = true;
+                name = "Bibata-Modern-Classic"; # Стилистически очень красивый черный курсор
+                package = pkgs.bibata-cursors;
+                size = 24;
+        };
 
-          [theme]
-          mode = "dark"
-	  palette = "Tokyo Night"
+        programs.noctalia = {
+          enable = true;
+	  package = pkgs-unstable.noctalia-shell;
+	  checkConfig = false;
+	  settings = {
+            shell = {
+              time_format = "{:%H:%M}";
+              date_format = "%A, %x";
+              corner_radius_scale = 1.0;
+            };
 
-          [bar.main]
-          position = "top"
-          thickness = 34
-          background_opacity = 1.0
-          radius = 12
-          margin_ends = 10
-          margin_edge = 10
-          padding = 14
-          widget_spacing = 6
-          shadow = true
+	    ui = {
+	      fontDefault = "Cascadia Code PL";
+	      fontFixed = "Cascadia Code PL";
+	    };
 
-          # Разметка виджетов на панели: слева, по центру и справа
-          start = ["launcher", "workspaces"]
-          center = ["clock"]
-          end = ["media", "tray", "volume", "brightness", "battery", "control-center"]
-          
-          # Если хочешь, чтобы Noctalia не перехватывала обои (пусть это делает hyprpaper/swaybg)
-          [wallpaper]
-          enabled = false
-        '';
+            theme = {
+              mode = "dark";
+              source = "builtin";
+              builtin = "Tokyo Night"; # <-- Используем точное название из графического меню!
+            };
+
+            bar.main = {
+              position = "top";
+              thickness = 34;
+              background_opacity = 1.0;
+              radius = 12;
+              margin_ends = 10;
+              margin_edge = 10;
+              padding = 14;
+              widget_spacing = 6;
+              shadow = true;
+              
+              # В Nix списки пишутся через пробел, без запятых:
+              start = [ "launcher" "workspaces" ];
+              center = [ "clock" ];
+              end = [ "media" "tray" "volume" "brightness" "battery" "control-center" ];
+            };
+
+            wallpaper = {
+              enabled = false;
+            };
+          };
+        };
 
         programs.neovim = {
                 enable = true;
@@ -147,7 +167,7 @@
                                 '';
                         }
 
-                        # 3. Treesitter (ПРАВИЛЬНЫЙ, НАТИВНЫЙ РАБОЧИЙ ВАРИАНТ)
+			# 3. Treesitter (ПРАВИЛЬНЫЙ, НАТИВНЫЙ РАБОЧИЙ ВАРИАНТ)
                         {
                                 plugin = nvim-treesitter.withAllGrammars;
                                 type = "lua";
@@ -177,15 +197,6 @@
                 '';
         };
 
-
-
-
-
-
-
-
-
-
         programs.foot = {
                 enable = true;
                 settings = {
@@ -198,6 +209,7 @@
                   };
                 };
         };
+
 	programs.ghostty = {
 		enable = true;
                 settings = {
@@ -216,11 +228,13 @@
                         theme = "TokyoNight";
                 };
 	};
+
 	programs.tmux = {
 	        enable = true;
 		clock24 = true;
 	};
-        wayland.windowManager.hyprland = {
+
+	wayland.windowManager.hyprland = {
                 enable = true;
                 systemd.variables = [ "--all" ];
                 extraConfig = builtins.readFile ./hyprland.lua;
