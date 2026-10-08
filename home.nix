@@ -79,52 +79,74 @@
                 extraPackages = with pkgs; [
                         nil
                         alejandra
+                        pyright
+                        ruff
                 ];
 
                 plugins = with pkgs.vimPlugins; [
                         nerdtree
-                        
-                        # Добавляем Tokyo Night и сразу настраиваем
+
+                        # 1. ТЕМА: Tokyo Night
                         {
                                 plugin = tokyonight-nvim;
                                 type = "lua";
                                 config = ''
                                   require("tokyonight").setup({
-                                    style = "night", -- Варианты: 'storm', 'moon', 'night', 'day'
-                                    transparent = false, -- Сделай true, если хочешь прозрачный фон
+                                    style = "night",
+                                    transparent = false,
                                     terminal_colors = true,
                                     styles = {
                                       comments = { italic = true },
                                       keywords = { italic = true },
-                                      functions = {},
-                                      variables = {},
                                     },
                                   })
-                                  -- Включаем тему
                                   vim.cmd("colorscheme tokyonight")
                                 '';
                         }
-                        
-                        # LSP
+
+                        # 2. LSP (Настраиваем Nix и Python)
                         {
                                 plugin = nvim-lspconfig;
                                 type = "lua";
                                 config = ''
+                                  -- === NIX ===
                                   vim.lsp.config('nil_ls', {
                                     cmd = { "nil" },
                                     filetypes = { "nix" },
                                     root_markers = { "flake.nix", ".git", "default.nix" },
-                                    settings = {
-                                      ['nil'] = {
-                                        formatting = { command = { "alejandra" } }
-                                      }
-                                    }
+                                    settings = { ['nil'] = { formatting = { command = { "alejandra" } } } }
                                   })
                                   vim.lsp.enable('nil_ls')
+
+                                  -- === PYTHON: Pyright (Навигация, F12, Ошибки типов) ===
+                                  vim.lsp.config('pyright', {
+                                    cmd = { "pyright-langserver", "--stdio" },
+                                    filetypes = { "python" },
+                                    root_markers = { "pyproject.toml", "setup.py", "requirements.txt", ".git" },
+                                  })
+                                  vim.lsp.enable('pyright')
+
+                                  -- === PYTHON: Ruff (Линтинг и Форматирование) ===
+                                  vim.lsp.config('ruff', {
+                                    cmd = { "ruff", "server" },
+                                    filetypes = { "python" },
+                                    root_markers = { "pyproject.toml", "ruff.toml", ".git" },
+                                  })
+                                  vim.lsp.enable('ruff')
+
+                                  -- Отключаем Semantic Tokens от LSP (чтобы цвета брались из темы, а не из LSP)
+                                  vim.api.nvim_create_autocmd("LspAttach", {
+                                    callback = function(args)
+                                      local client = vim.lsp.get_client_by_id(args.data.client_id)
+                                      if client then
+                                        client.server_capabilities.semanticTokensProvider = nil
+                                      end
+                                    end,
+                                  })
                                 '';
                         }
-                        
-                        # Treesitter
+
+                        # 3. Treesitter (ПРАВИЛЬНЫЙ, НАТИВНЫЙ РАБОЧИЙ ВАРИАНТ)
                         {
                                 plugin = nvim-treesitter.withAllGrammars;
                                 type = "lua";
@@ -139,19 +161,29 @@
                         }
                 ];
 
-                # Внешний вид (остальные настройки) и хоткеи
                 initLua = ''
                   vim.opt.shortmess:append("I")
+
+                  -- Обязательно включаем поддержку 24-битных цветов, чтобы Tokyo Night выглядел сочно
+                  vim.opt.termguicolors = true
 
                   -- Хоткеи
                   vim.keymap.set('n', '<F12>', vim.lsp.buf.definition, { desc = "Go to Definition" })
                   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "Hover Info" })
                   vim.keymap.set('n', 'gd', vim.lsp.buf.code_action, { desc = "Code Action" })
-                  
-                  -- Форматирование
+
                   vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = "Format Document" })
                 '';
         };
+
+
+
+
+
+
+
+
+
 
         programs.foot = {
                 enable = true;
