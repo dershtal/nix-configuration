@@ -25,20 +25,21 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 
 -- mon for main system type
-hl.monitor({
-    output   = "HDMI-A-2",
-    mode     = "2560x1440@75",
-    position = "0x0",
-    scale    = "1",
-})
-
--- mon for VM
 --hl.monitor({
---    output = "",
---    mode = "preferred",
---    position = "auto",
---    scale = "1",
+--    output   = "HDMI-A-2",
+--    mode     = "2560x1440@75",
+--    position = "0x0",
+--    scale    = "1",
 --})
+
+
+-- Эти параметры необхъодимы для работы системы как VM.
+hl.monitor({
+    output = "",
+    mode = "preferred",
+    position = "auto",
+    scale = "1",
+})
 
 
 ---------------------
@@ -82,8 +83,8 @@ hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("XCURSOR_THEME", "Bibata-Modern-Classic")
 hl.env("HYPRCURSOR_THEME", "Bibata-Modern-Classic")
 
--- Это нужно только для VM среды (отключить на релизе)
---hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
+-- Эти параметры необхъодимы для работы системы как VM.
+hl.env("LIBGL_ALWAYS_SOFTWARE", "1") -- vm_setting
 
 -----------------------
 ----- PERMISSIONS -----

@@ -41,7 +41,8 @@
 
   # Параметры ядра, если нужны:
   boot.kernelParams = [
-    "video=1920x1080"
+    "video=2560x1440"
+    "nvidia.NVreg_EnableGpuFirmware=0"
     "quiet"
     "splash"
     "pti=off"
@@ -102,7 +103,9 @@
   #  WLR_NO_HARDWARE_CURSORS = "1";
   #};
 
-  virtualisation.vmware.guest.enable = false;
+
+  # Эти параметры необхъодимы для работы системы как VM.
+  virtualisation.vmware.guest.enable = true; # vm_setting
 
 
       #nvidia = {
