@@ -35,7 +35,7 @@
         imports = [
                ./bash.nix
 	       ./git.nix
-	       ./noctalia.nix
+	       ../../modules/home/noctalia-shell
         ];
 
         fonts.fontconfig.enable = true;

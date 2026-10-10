@@ -7,8 +7,8 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./noctalia-greeter.nix
+      ./hardware.nix
+      ../../modules/system/noctalia-greeter
     ];
 
   # Отключаем systemd-boot
