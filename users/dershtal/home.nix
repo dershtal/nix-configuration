@@ -86,9 +86,12 @@
               center = [ "clock" ];
               end = [ "media" "tray" "volume" "brightness" "battery" "control-center" ];
             };
-
             wallpaper = {
-              enabled = false;
+              enable = true;
+	    };
+
+            desktop.wallpaper = {
+	      image = "${./snowflake.png}";
             };
           };
         };
