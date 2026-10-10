@@ -96,6 +96,10 @@
     # но включение самого модуля обязательно для создания .desktop файлов в /run/current-system/sw/share/wayland-sessions/
   };
 
+  programs.niri = {
+    enable = true;
+  };
+
   # === ФИКС ДЛЯ ВИРТУАЛКИ (VMware) ===
   # Заставляем экран входа использовать программный рендеринг
   #systemd.services.greetd.environment = {
@@ -105,7 +109,7 @@
 
 
   # Эти параметры необхъодимы для работы системы как VM.
-  virtualisation.vmware.guest.enable = true; # vm_setting
+  virtualisation.vmware.guest.enable = false; # vm_setting
 
 
       #nvidia = {

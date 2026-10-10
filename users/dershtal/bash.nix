@@ -1,13 +1,13 @@
 {
-        programs.bash = {
-                enable = true;
-                shellAliases =
-                let
-                        flakePath = "~/nix-configuration";
-                in {
-                        rebuild = "sudo nixos-rebuild switch --flake ${flakePath}";
-                        hms = "home-manager switch --flake ${flakePath}";
-			gad = "git add .";
-                };
-        };
+  programs.bash = {
+    enable = true;
+    shellAliases =
+    let
+      flakePath = "~/nix-configuration";
+    in {
+      rebuild = "sudo nixos-rebuild switch --flake ${flakePath}";
+      hms = "home-manager switch --flake ${flakePath}";
+      gad = "git add .";
+    };
+  };
 }

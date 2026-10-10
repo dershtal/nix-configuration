@@ -1,132 +1,136 @@
-{ config, pkgs, pkgs-unstable, ... }: {
-        nixpkgs.config.allowUnfree = true;
-        home = {
-                username = "dershtal";
-                homeDirectory = "/home/dershtal";
-                stateVersion = "26.05";
+{ config, pkgs, pkgs-unstable, ... }:
 
-                packages = with pkgs; [
-		        git
-			fastfetch
-                        ghostty
-                        foot
-			tmux
-                        sox
-                        mc
-                        hyprland
-                        cascadia-code
-                        dejavu_fonts
-                        liberation_ttf
-                        noto-fonts
-                        noto-fonts-cjk-sans
-                        noto-fonts-color-emoji
-                        wofi
-                        superfile
-			vscode
-			firefox
-			chromium
-			pciutils
-                        read-edid
-			radare2
-			bibata-cursors
-                ];
-        };
+{
+  nixpkgs.config.allowUnfree = true;
+  home = {
+    username = "dershtal";
+    homeDirectory = "/home/dershtal";
+    stateVersion = "26.05";
 
-        imports = [
-               ./bash.nix
-	       ./git.nix
-	       ../../modules/home/noctalia-shell
-        ];
+    packages = with pkgs; [
+      git
+      fastfetch
+      ghostty
+      foot
+      tmux
+      sox
+      mc
+      hyprland
+      cascadia-code
+      dejavu_fonts
+      liberation_ttf
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
+      wofi
+      superfile
+      vscode
+      firefox
+      chromium
+      google-chrome
+      pciutils
+      read-edid
+      radare2
+      bibata-cursors
+    ];
+  };
 
-        fonts.fontconfig.enable = true;
+  imports = [
+    ./bash.nix
+    ./git.nix
+    ../../modules/home/noctalia-shell
+  ];
 
-	home.pointerCursor = {
-                gtk.enable = true;
-                x11.enable = true;
-                name = "Bibata-Modern-Classic"; # Стилистически очень красивый черный курсор
-                package = pkgs.bibata-cursors;
-                size = 24;
-        };
+  fonts.fontconfig.enable = true;
 
-        programs.noctalia = {
-          enable = true;
-	  package = pkgs-unstable.noctalia-shell;
-	  checkConfig = false;
-	  settings = {
-            shell = {
-              time_format = "{:%H:%M}";
-              date_format = "%A, %x";
-              corner_radius_scale = 1.0;
-            };
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "Bibata-Modern-Classic"; # Стилистически очень красивый черный курсор
+    package = pkgs.bibata-cursors;
+    size = 24;
+  };
 
-	    ui = {
-	      fontDefault = "Cascadia Code PL";
-	      fontFixed = "Cascadia Code PL";
-	    };
+  programs.noctalia = {
+    enable = true;
+    package = pkgs-unstable.noctalia-shell;
+    checkConfig = false;
+    settings = {
+      shell = {
+        time_format = "{:%H:%M}";
+	date_format = "%A, %x";
+	corner_radius_scale = 1.0;
+      };
 
-            theme = {
-              mode = "dark";
-              source = "builtin";
-              builtin = "Tokyo Night"; # <-- Используем точное название из графического меню!
-            };
+      ui = {
+        fontDefault = "Cascadia Code PL";
+	fontFixed = "Cascadia Code PL";
+      };
 
-            bar.main = {
-              position = "top";
-              thickness = 34;
-              background_opacity = 1.0;
-              radius = 12;
-              margin_ends = 10;
-              margin_edge = 10;
-              padding = 14;
-              widget_spacing = 6;
-              shadow = true;
-              
-              # В Nix списки пишутся через пробел, без запятых:
-              start = [ "launcher" "workspaces" ];
-              center = [ "clock" ];
-              end = [ "media" "tray" "volume" "brightness" "battery" "control-center" ];
-            };
-            wallpaper = {
-              enable = true;
-	    };
+      theme = {
+        mode = "dark";
+	source = "builtin";
+	builtin = "Tokyo Night"; # <-- Используем точное название из графического меню!
+      };
 
-            desktop.wallpaper = {
-	      image = "${./snowflake.png}";
-            };
-          };
-        };
+      bar.main = {
+        position = "top";
+	thickness = 34;
+	background_opacity = 1.0;
+	radius = 12;
+	margin_ends = 10;
+	margin_edge = 10;
+	padding = 14;
+	widget_spacing = 6;
+	shadow = true;
 
-        programs.neovim = {
-                enable = true;
-                defaultEditor = true;
+	# В Nix списки пишутся через пробел, без запятых:
+	start = [ "launcher" "workspaces" ];
+	center = [ "clock" ];
+	end = [ "media" "tray" "volume" "brightness" "battery" "control-center" ];
+      };
 
-                extraPackages = with pkgs; [
-                        nil
-                        alejandra
-                        pyright
-                        ruff
-                ];
+      wallpaper = {
+        enable = true;
+      };
 
-                plugins = with pkgs.vimPlugins; [
-                        nerdtree
+      desktop.wallpaper = {
+        image = "${./snowflake.png}";
+      };
+    };
+  };
 
-                        # 1. ТЕМА: Tokyo Night
-                        {
-                                plugin = tokyonight-nvim;
-                                type = "lua";
-                                config = ''
-                                  require("tokyonight").setup({
-                                    style = "night",
-                                    transparent = false,
-                                    terminal_colors = true,
-                                    styles = {
-                                      comments = { italic = true },
-                                      keywords = { italic = true },
-                                    },
-                                  })
-                                  vim.cmd("colorscheme tokyonight")
-                                '';
-                        }
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+
+    extraPackages = with pkgs; [
+      nil
+      alejandra
+      pyright
+      ruff
+    ];
+
+    plugins = with pkgs.vimPlugins; [
+      nerdtree
+
+      # 1. ТЕМА: Tokyo Night
+      {
+        plugin = tokyonight-nvim;
+	type = "lua";
+	config = ''
+	require("tokyonight").setup({
+	  style = "night",
+	  transparent = false,
+	  terminal_colors = true,
+	  styles = {
+	    comments = { italic = true },
+	    keywords = { italic = true },
+          },
+        })
+	vim.cmd("colorscheme tokyonight")
+        '';
+      }
 
                         # 2. LSP (Настраиваем Nix и Python)
                         {
@@ -242,5 +246,7 @@
                 systemd.variables = [ "--all" ];
                 extraConfig = builtins.readFile ./hyprland.lua;
         };
+
+	xdg.configFile."niri/config.kdl".source = ./config.kdl;
 
 }
