@@ -100,6 +100,14 @@
     enable = true;
   };
 
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
+
+  programs.gamemode.enable = true;
+
   # === ФИКС ДЛЯ ВИРТУАЛКИ (VMware) ===
   # Заставляем экран входа использовать программный рендеринг
   #systemd.services.greetd.environment = {
@@ -141,6 +149,8 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
+
+
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
@@ -149,6 +159,7 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -199,6 +210,7 @@
      wget
      htop
      home-manager
+     xwayland-satellite
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
