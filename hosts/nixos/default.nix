@@ -70,6 +70,16 @@
 
   nix.settings.experimental-features =["nix-command" "flakes"];
 
+
+
+  # Это и настройки ебучей Nvidia засунуть в отдельный флек
+  # Потому что Хуанг не смог сделать нормальные драйвера под Линь
+  services.xserver.screenSection = ''
+    Option "Coolbits" "4"
+  '';
+
+  programs.coolercontrol.enable = true;
+
   services.displayManager.noctalia-greeter = {
     enable = true;
     
