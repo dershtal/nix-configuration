@@ -340,6 +340,9 @@ window-rule {
 
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
+
+// Это стоит почитать и изучить
+
 /-window-rule {
     match app-id=r#"^org\.keepassxc\.KeePassXC$"#
     match app-id=r#"^org\.gnome\.World\.Secrets$"#
@@ -355,6 +358,13 @@ window-rule {
 /-window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
+}
+
+window-rule {
+    match app-id="com.mitchellh.ghostty"
+    default-column-width {
+	    proportion 0.5;
+    }
 }
 
 binds {
